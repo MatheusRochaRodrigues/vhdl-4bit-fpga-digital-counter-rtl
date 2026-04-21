@@ -1,0 +1,20 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+
+ENTITY neg_d IS 
+PORT(
+	clk, d, clr: IN BIT;
+	q: OUT BIT);
+END neg_d;
+
+ARCHITECTURE simple OF neg_d IS
+BEGIN
+	PROCESS(clk,clr)
+	BEGIN
+		IF clr = '0' THEN
+			q <= '0';
+		ELSIF(clk'EVENT AND clk ='0') THEN
+			q <= d;
+		END IF;
+	END PROCESS;	
+END simple;

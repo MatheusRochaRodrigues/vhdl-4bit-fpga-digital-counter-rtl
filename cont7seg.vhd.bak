@@ -1,0 +1,48 @@
+library ieee;
+USE ieee.std_logic_1164.all;
+
+ENTITY cont7seg IS
+	PORT(mCLOCK, mCLEAR:IN BIT;
+		  LED : INOUT BIT_VECTOR(7 DOWNTO 0));
+END cont7seg;
+
+ARCHITECTURE box OF cont7seg IS
+	SIGNAL exitRegY : BIT_VECTOR(3 DOWNTO 0);
+	SIGNAL exitFuncSomaY : BIT_VECTOR(3 DOWNTO 0);
+	
+	
+	COMPONENT REG IS
+		PORT( Rclk, Rclr: IN BIT;
+				Rd: IN BIT_VECTOR(3 DOWNTO 0);	--entrada
+				Ry: OUT BIT_VECTOR(3 DOWNTO 0));		--saida
+	END COMPONENT REG;
+	
+	COMPONENT Func_soma IS
+	PORT (fA : IN BIT_VECTOR(3 DOWNTO 0);
+			fS_OUT: OUT BIT_VECTOR(3 DOWNTO 0));
+	END COMPONENT Func_soma;
+	
+	
+	COMPONENT DISPLAY IS
+	PORT (--D_in : IN STD_LOGIC BIT_VECTOR(3 DOWNTO 0);
+			d1,d2,d3,d4 : IN BIT;
+			a, b, c, d, e, f, g, h : OUT BIT);
+	END COMPONENT DISPLAY;
+
+BEGIN
+	
+	regg: REG Port Map (Rclk => mCLOCK, Rclr => mCLEAR, 
+						    Rd(0) => exitFuncSomaY(0), Rd(1) => exitFuncSomaY(1), Rd(2) => exitFuncSomaY(2), Rd(3) => exitFuncSomaY(3),
+							 Ry(0) => exitRegY(0), Ry(1) => exitRegY(1), Ry(2) => exitRegY(2), Ry(3) => exitRegY(3));
+	
+	Rsoma: Func_soma Port Map (fA(0) => exitRegY(0), fA(1) => exitRegY(1), fA(2) => exitRegY(2), fA(3) => exitRegY(3), 
+										fS_OUT(0) => exitFuncSomaY(0), fS_OUT(1) => exitFuncSomaY(1), fS_OUT(2) => exitFuncSomaY(2), fS_OUT(3) => exitFuncSomaY(3));
+	
+	Disp: DISPLAY Port Map (d1 => exitRegY(0), d2 => exitRegY(1), d3 => exitRegY(2), d4 => exitRegY(3),
+									a => LED(0), b => LED(1), c => LED(2), d => LED(3), e => LED(4), f => LED(5), g => LED(6), h => LED(7));
+	
+	
+	--Rd OBTIDO
+
+	
+END box;

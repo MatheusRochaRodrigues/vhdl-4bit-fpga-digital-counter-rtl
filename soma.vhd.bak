@@ -1,0 +1,14 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+ENTITY soma IS
+PORT (
+a, b, c_IN : IN BIT;
+s, c_OUT : OUT BIT);
+END soma;
+ARCHITECTURE add OF soma IS
+	SIGNAL AB_NOR : BIT;
+BEGIN
+AB_NOR <= (A xOR B);
+S <= (C_IN xOR AB_NOR);
+C_OUT <= ((AB_NOR AND C_IN) OR (A AND B));
+END add;

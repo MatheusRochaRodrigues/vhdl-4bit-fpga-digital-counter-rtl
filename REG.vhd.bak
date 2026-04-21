@@ -1,0 +1,20 @@
+library ieee;
+USE ieee.std_logic_1164.all;
+
+ENTITY REG IS
+	PORT( Rclk, Rclr: IN BIT;
+			Rd: IN BIT_VECTOR(3 DOWNTO 0);
+			Ry: OUT BIT_VECTOR(3 DOWNTO 0));
+END REG;
+
+ARCHITECTURE registro OF REG IS
+	COMPONENT neg_d IS 
+		PORT(clk, d, clr: IN BIT;
+			  q: OUT BIT);
+	END COMPONENT neg_d;
+BEGIN
+	rr0: neg_d PORT MAP(clk => Rclk, d => Rd(0), clr => Rclr,q => Ry(0));
+	rr1: neg_d PORT MAP(clk => Rclk, d => Rd(1), clr => Rclr,q => Ry(1));
+	rr2: neg_d PORT MAP(clk => Rclk, d => Rd(2), clr => Rclr,q => Ry(2));
+	rr3: neg_d PORT MAP(clk => Rclk, d => Rd(3), clr => Rclr,q => Ry(3));
+END registro;
